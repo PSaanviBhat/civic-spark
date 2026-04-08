@@ -41,7 +41,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               {isActive && !isReport && (
                 <motion.div
                   layoutId="activeTab"
-                  className="absolute inset-0 bg-primary/10 rounded-2xl"
+                  className="pointer-events-none absolute inset-0 bg-primary/10 rounded-2xl"
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
               )}

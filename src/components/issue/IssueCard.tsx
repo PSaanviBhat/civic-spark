@@ -51,6 +51,9 @@ export function IssueCard({ issue, onUpvote, onView }: IssueCardProps) {
                   <Badge variant={statusConfig.color as any} className="text-xs">
                     {statusConfig.label}
                   </Badge>
+                  {issue.status === 'resolved' && (
+                    <Badge variant="resolved" className="text-[10px]">Closed</Badge>
+                  )}
                 </div>
                 <button 
                   onClick={() => onView?.(issue.id)}

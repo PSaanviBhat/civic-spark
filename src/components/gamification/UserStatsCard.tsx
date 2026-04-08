@@ -33,12 +33,12 @@ export function UserStatsCard({ user, onViewProfile }: UserStatsCardProps) {
     >
       {/* Gradient background */}
       <div className={cn(
-        "absolute inset-0 bg-gradient-to-br opacity-90",
+        "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-90",
         levelColors[user.level - 1] || levelColors[0]
       )} />
       
       {/* Pattern overlay */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="pointer-events-none absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
           backgroundSize: '24px 24px'

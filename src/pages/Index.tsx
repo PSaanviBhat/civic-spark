@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { BottomNav } from '@/components/BottomNav';
+import { apiClient } from '@/api/client';
+import { BottomNav } from '@/components/common';
+import { useCurrentUser } from '@/hooks/api/useAuth';
+import { AuthView } from '@/views/AuthView';
 import { HomeView } from '@/views/HomeView';
 import { MapView } from '@/views/MapView';
 import { ReportView } from '@/views/ReportView';
@@ -10,6 +13,21 @@ type Tab = 'home' | 'map' | 'report' | 'leaderboard' | 'profile';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab>('home');
+  const token = apiClient.getToken();
+  const { data: currentUser, isLoading } = useCurrentUser();
+
+  if (!token) {
+    return <AuthView />;
+  }
+
+  if (isLoading) {
+    return <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">Loading your workspace...</div>;
+  }
+
+  if (!currentUser) {
+    apiClient.clearToken();
+    return <AuthView />;
+  }
 
   const renderView = () => {
     switch (activeTab) {
