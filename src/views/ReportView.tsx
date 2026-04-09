@@ -1,6 +1,6 @@
 import { ChangeEvent, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, ChevronLeft, MapPin, Send, Upload, X } from 'lucide-react';
+import { Camera, ChevronLeft, ImagePlus, MapPin, Send, Upload, X } from 'lucide-react';
 
 import { useCreateIssue } from '@/hooks/api/useIssues';
 import { usePresignUpload, useUploadToS3 } from '@/hooks/api/useMedia';
@@ -30,7 +30,8 @@ export function ReportView({ onBack }: ReportViewProps) {
   const [location, setLocation] = useState(fallbackLocation);
   const [statusMessage, setStatusMessage] = useState('');
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const cameraInputRef = useRef<HTMLInputElement | null>(null);
+  const galleryInputRef = useRef<HTMLInputElement | null>(null);
   const createIssue = useCreateIssue();
   const presignUpload = usePresignUpload();
   const uploadToS3 = useUploadToS3();
@@ -71,6 +72,7 @@ export function ReportView({ onBack }: ReportViewProps) {
     setPhotoPreview(URL.createObjectURL(file));
     setStep(3);
     setStatusMessage('Photo selected. It will be uploaded to S3 when you submit.');
+    event.target.value = '';
   };
 
   const handleSubmit = async () => {
@@ -170,16 +172,25 @@ export function ReportView({ onBack }: ReportViewProps) {
             <div>
               <h2 className="text-sm font-semibold mb-3">Attach evidence</h2>
               {!photo ? (
-                <Card
-                  className="border-2 border-dashed border-primary/30 bg-primary/5 cursor-pointer hover:border-primary/50 transition-colors"
-                  onClick={() => fileInputRef.current?.click()}
-                >
+                <Card className="border-2 border-dashed border-primary/30 bg-primary/5 transition-colors">
                   <CardContent className="flex flex-col items-center justify-center py-8">
                     <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
                       <Camera className="w-8 h-8 text-primary" />
                     </div>
-                    <p className="text-sm font-medium text-primary">Select Photo</p>
-                    <p className="text-xs text-muted-foreground mt-1">PNG or JPEG. Uploaded directly to your S3 bucket.</p>
+                    <p className="text-sm font-medium text-primary">Add Photo Evidence</p>
+                    <p className="text-xs text-muted-foreground mt-1 text-center">
+                      Use your camera on mobile or choose an existing image.
+                    </p>
+                    <div className="grid w-full max-w-sm gap-3 mt-5 sm:grid-cols-2">
+                      <Button variant="hero" className="w-full" onClick={() => cameraInputRef.current?.click()}>
+                        <Camera className="w-4 h-4 mr-2" />
+                        Take Photo
+                      </Button>
+                      <Button variant="outline" className="w-full" onClick={() => galleryInputRef.current?.click()}>
+                        <ImagePlus className="w-4 h-4 mr-2" />
+                        Choose Photo
+                      </Button>
+                    </div>
                     <div className="flex gap-2 mt-4">
                       <Badge variant="outline" className="text-xs">AWS S3</Badge>
                       <Badge variant="outline" className="text-xs">AI Verification</Badge>
@@ -191,15 +202,47 @@ export function ReportView({ onBack }: ReportViewProps) {
                   <div className="aspect-video rounded-2xl bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
                     <img src={photoPreview} alt="Issue preview" className="w-full h-full object-cover" />
                   </div>
-                  <Button variant="destructive" size="iconSm" className="absolute top-2 right-2" onClick={() => setPhoto(null)}>
+                  <Button
+                    variant="destructive"
+                    size="iconSm"
+                    className="absolute top-2 right-2"
+                    onClick={() => {
+                      setPhoto(null);
+                      setPhotoPreview('');
+                    }}
+                  >
                     <X className="w-4 h-4" />
                   </Button>
                   <Badge variant="resolved" className="absolute bottom-2 left-2 text-xs">
                     Uploaded on submit (+10 XP)
                   </Badge>
+                  <div className="mt-3 flex gap-2">
+                    <Button variant="outline" className="flex-1" onClick={() => cameraInputRef.current?.click()}>
+                      <Camera className="w-4 h-4 mr-2" />
+                      Retake
+                    </Button>
+                    <Button variant="outline" className="flex-1" onClick={() => galleryInputRef.current?.click()}>
+                      <ImagePlus className="w-4 h-4 mr-2" />
+                      Replace
+                    </Button>
+                  </div>
                 </div>
               )}
-              <input ref={fileInputRef} type="file" accept="image/png,image/jpeg" className="hidden" onChange={handlePhotoChange} />
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={handlePhotoChange}
+              />
+              <input
+                ref={galleryInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handlePhotoChange}
+              />
             </div>
 
             <div className="space-y-3">
