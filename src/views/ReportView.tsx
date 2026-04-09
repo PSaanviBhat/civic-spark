@@ -122,15 +122,23 @@ export function ReportView({ onBack }: ReportViewProps) {
   return (
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border">
-        <div className="flex items-center gap-3 px-4 py-3">
-          <Button variant="ghost" size="iconSm" onClick={onBack}>
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-lg font-bold">Report Issue</h1>
-            <p className="text-xs text-muted-foreground">Photo upload, geolocation, and cloud verification</p>
+        <div className="px-4 py-3">
+          <div className="flex items-start gap-3">
+            <Button variant="ghost" size="iconSm" className="mt-0.5 shrink-0" onClick={onBack}>
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <h1 className="text-lg font-bold leading-tight">Report Issue</h1>
+                  <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground sm:max-w-sm">
+                    Photo upload, geolocation, and cloud verification
+                  </p>
+                </div>
+                <Badge variant="xp" className="w-fit text-xs">+20 XP</Badge>
+              </div>
+            </div>
           </div>
-          <Badge variant="xp" className="text-xs">+20 XP</Badge>
         </div>
 
         <div className="flex gap-1 px-4 pb-3">
@@ -146,7 +154,7 @@ export function ReportView({ onBack }: ReportViewProps) {
       <div className="px-4 py-4 space-y-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <h2 className="text-sm font-semibold mb-3">What type of issue is this?</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {CATEGORIES.map((category) => (
               <motion.button
                 key={category.id}
@@ -156,12 +164,12 @@ export function ReportView({ onBack }: ReportViewProps) {
                   setStep(2);
                 }}
                 className={cn(
-                  'flex flex-col items-center p-4 rounded-2xl border-2 transition-all duration-200',
+                  'flex min-h-[108px] flex-col items-center justify-center p-4 rounded-2xl border-2 text-center transition-all duration-200',
                   selectedCategory === category.id ? 'border-primary bg-primary/5 shadow-card' : 'border-border hover:border-primary/50',
                 )}
               >
-                <span className="text-3xl mb-2">{category.icon}</span>
-                <span className="text-xs font-medium">{category.label}</span>
+                <span className="mb-2 text-3xl">{category.icon}</span>
+                <span className="text-xs font-medium leading-snug">{category.label}</span>
               </motion.button>
             ))}
           </div>
@@ -181,7 +189,7 @@ export function ReportView({ onBack }: ReportViewProps) {
                     <p className="text-xs text-muted-foreground mt-1 text-center">
                       Use your camera on mobile or choose an existing image.
                     </p>
-                    <div className="grid w-full max-w-sm gap-3 mt-5 sm:grid-cols-2">
+                    <div className="mt-5 grid w-full max-w-sm gap-3 sm:grid-cols-2">
                       <Button variant="hero" className="w-full" onClick={() => cameraInputRef.current?.click()}>
                         <Camera className="w-4 h-4 mr-2" />
                         Take Photo
@@ -198,32 +206,34 @@ export function ReportView({ onBack }: ReportViewProps) {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="relative">
-                  <div className="aspect-video rounded-2xl bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
-                    <img src={photoPreview} alt="Issue preview" className="w-full h-full object-cover" />
-                  </div>
-                  <Button
-                    variant="destructive"
-                    size="iconSm"
-                    className="absolute top-2 right-2"
-                    onClick={() => {
-                      setPhoto(null);
-                      setPhotoPreview('');
-                    }}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                  <Badge variant="resolved" className="absolute bottom-2 left-2 text-xs">
-                    Uploaded on submit (+10 XP)
-                  </Badge>
-                  <div className="mt-3 flex gap-2">
-                    <Button variant="outline" className="flex-1" onClick={() => cameraInputRef.current?.click()}>
-                      <Camera className="w-4 h-4 mr-2" />
-                      Retake
+                <div className="space-y-3">
+                  <div className="relative">
+                    <div className="aspect-video rounded-2xl bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center overflow-hidden">
+                      <img src={photoPreview} alt="Issue preview" className="w-full h-full object-cover" />
+                    </div>
+                    <Button
+                      variant="destructive"
+                      size="iconSm"
+                      className="absolute top-2 right-2"
+                      onClick={() => {
+                        setPhoto(null);
+                        setPhotoPreview('');
+                      }}
+                    >
+                      <X className="w-4 h-4" />
                     </Button>
-                    <Button variant="outline" className="flex-1" onClick={() => galleryInputRef.current?.click()}>
+                    <Badge variant="resolved" className="absolute bottom-2 left-2 max-w-[calc(100%-1rem)] text-xs">
+                      Uploaded on submit (+10 XP)
+                    </Badge>
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <Button variant="outline" className="w-full justify-center" onClick={() => cameraInputRef.current?.click()}>
+                      <Camera className="w-4 h-4 mr-2" />
+                      Retake Photo
+                    </Button>
+                    <Button variant="outline" className="w-full justify-center" onClick={() => galleryInputRef.current?.click()}>
                       <ImagePlus className="w-4 h-4 mr-2" />
-                      Replace
+                      Replace Image
                     </Button>
                   </div>
                 </div>
@@ -275,15 +285,15 @@ export function ReportView({ onBack }: ReportViewProps) {
             <h2 className="text-sm font-semibold mb-3">Location</h2>
             <Card className="border-2 border-primary/20">
               <CardContent className="p-4">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <div className="w-12 h-12 rounded-xl gradient-hero flex items-center justify-center">
                     <MapPin className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-sm">Active location</p>
-                    <p className="text-xs text-muted-foreground">{locationLabel}</p>
+                    <p className="text-xs leading-relaxed text-muted-foreground break-words">{locationLabel}</p>
                   </div>
-                  <Button variant="outline" size="sm" onClick={handleCaptureLocation}>
+                  <Button variant="outline" size="sm" className="w-full sm:w-auto" onClick={handleCaptureLocation}>
                     <Upload className="w-4 h-4 mr-1" />
                     Refresh
                   </Button>
