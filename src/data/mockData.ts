@@ -102,13 +102,4 @@ export const mockIssues: Issue[] = [
   },
 ];
 
-export const mockLeaderboard: LeaderboardEntry[] = [
-  { rank: 1, user: { ...mockUser, id: '10', name: 'Priya Sharma', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=priya', xp: 1820, levelName: 'City Champion', level: 5, rank: 1 } as User, points: 1820, change: 0 },
-  { rank: 2, user: { ...mockUser, id: '11', name: 'Arjun Reddy', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=arjun', xp: 1650, levelName: 'City Champion', level: 5, rank: 2 } as User, points: 1650, change: 1 },
-  { rank: 3, user: { ...mockUser, id: '12', name: 'Meera Patel', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=meera', xp: 1420, levelName: 'Community Leader', level: 4, rank: 3 } as User, points: 1420, change: -1 },
-  { rank: 4, user: { ...mockUser, id: '13', name: 'Rohit Singh', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=rohit', xp: 1180, levelName: 'Community Leader', level: 4, rank: 4 } as User, points: 1180, change: 2 },
-  { rank: 5, user: { ...mockUser, id: '14', name: 'Ananya Rao', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ananya', xp: 920, levelName: 'Community Leader', level: 4, rank: 5 } as User, points: 920, change: 0 },
-  { rank: 6, user: { ...mockUser, id: '15', name: 'Siddharth Iyer', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=siddharth', xp: 680, levelName: 'City Helper', level: 3, rank: 6 } as User, points: 680, change: -2 },
-  { rank: 7, user: mockUser, points: 485, change: 1 },
-  { rank: 8, user: { ...mockUser, id: '16', name: 'Deepika Nair', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=deepika', xp: 420, levelName: 'City Helper', level: 3, rank: 8 } as User, points: 420, change: -1 },
-];
+export const mockLeaderboard: LeaderboardEntry[] = [];
