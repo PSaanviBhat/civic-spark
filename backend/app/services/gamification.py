@@ -51,6 +51,7 @@ def get_leaderboard(db: Session, limit: int = 20, skip: int = 0) -> List[dict]:
     """Get leaderboard ranked by XP"""
     users = (
         db.query(User)
+        .filter(User.xp > 0)
         .order_by(desc(User.xp))
         .offset(skip)
         .limit(limit)
